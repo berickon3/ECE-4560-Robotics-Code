@@ -6,16 +6,33 @@ classdef transform2d
         displacement
         rotation
         points
+        theta
     end
     
     methods
         function obj = transform2d(displacement,theta)
             obj.displacement = displacement;
-            obj.rotation = [cos(theta), -sin(theta); sin(theta), cos(theta)];
+            obj.theta = theta;
+            obj = obj.updateRotMat();
+            obj.points = NaN([2,1]);
+        end
+
+        function obj = compose(obj,transform2)
+            obj.updateRotMat();
+            transform2.updateRotMat();
+            overallDisplacement = obj.displacement + obj.pointOperation(transform2.displacement);
+            overallRotation = obj.rotation * transform2.rotation;
+            overallTheta = atan2(overallRotation(2,1),overallRotation(1,1));
+            obj = transform2d(overallDisplacement,overallTheta);
         end
         
         function points = pointOperation(obj,points)
+            obj.updateRotMat();
             points = obj.displacement + obj.rotation*points;
+        end
+
+        function obj = updateRotMat(obj)
+            obj.rotation = [cos(obj.theta), -sin(obj.theta); sin(obj.theta), cos(obj.theta)];
         end
     end
 end
