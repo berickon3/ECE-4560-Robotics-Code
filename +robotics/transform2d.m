@@ -1,6 +1,5 @@
 classdef transform2d
     %TRANSFORM This class defines a transform in 2d
-    %   Detailed explanation goes here
     
     properties
         displacement
@@ -23,7 +22,7 @@ classdef transform2d
             overallDisplacement = obj.displacement + obj.pointOperation(transform2.displacement);
             overallRotation = obj.rotation * transform2.rotation;
             overallTheta = atan2(overallRotation(2,1),overallRotation(1,1));
-            obj = transform2d(overallDisplacement,overallTheta);
+            obj = robotics.transform2d(overallDisplacement,overallTheta);
         end
         
         function points = pointOperation(obj,points)
