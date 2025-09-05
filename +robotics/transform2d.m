@@ -35,7 +35,7 @@ classdef transform2d
             obj.theta = -obj.theta;
             obj.updateRotMat;
         end
-        
+
         function obj = updateRotMat(obj)
             obj.rotation = [cos(obj.theta), -sin(obj.theta); sin(obj.theta), cos(obj.theta)];
         end
