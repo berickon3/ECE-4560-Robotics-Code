@@ -19,7 +19,7 @@ classdef transform2d
         function obj = compose(obj,transform2)
             obj.updateRotMat();
             transform2.updateRotMat();
-            overallDisplacement = obj.displacement + obj.pointOperation(transform2.displacement);
+            overallDisplacement = obj.displacement + obj.rotation*transform2.displacement;
             overallRotation = obj.rotation * transform2.rotation;
             overallTheta = atan2(overallRotation(2,1),overallRotation(1,1));
             obj = robotics.transform2d(overallDisplacement,overallTheta);
