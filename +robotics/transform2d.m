@@ -29,7 +29,13 @@ classdef transform2d
             obj.updateRotMat();
             points = obj.displacement + obj.rotation*points;
         end
-
+        
+        function obj = inverse(obj)
+            obj.displacement = -transpose(obj.rotation)*obj.displacement;
+            obj.theta = -obj.theta;
+            obj.updateRotMat;
+        end
+        
         function obj = updateRotMat(obj)
             obj.rotation = [cos(obj.theta), -sin(obj.theta); sin(obj.theta), cos(obj.theta)];
         end
