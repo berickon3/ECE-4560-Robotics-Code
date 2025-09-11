@@ -20,12 +20,14 @@ def visualize_robot(joint_angles, link_lengths):
     
     # Get all frame rotation matrices
     Rlist = [R(angle) for angle in joint_angles]
+    Rlist.append(R(0));
 
     # Get all frame displacement vectors
-    dlist = link_lengths
-    
+    dlist = list(link_lengths)
+    dlist.insert(0, 0)
+
     # Compute the transformation matrices for each frame
-    Tlist = [np.eye(3)]
+    Tlist = []
     for i in range(len(Rlist)):
         d = np.array([[0], [dlist[i]]])
         Tlist.append(T(Rlist[i], d))
@@ -59,18 +61,20 @@ def visualize_robot(joint_angles, link_lengths):
     plt.grid(True)
     plt.xlim([-10, 10])
     plt.ylim([-2, 10])
-    
-    return plt
-    
+
+    final_axes = get_axes(frame_pos[-1], frame_rot[-1])
+
+    return plt, [frame_pos[-1], final_axes]
+
 # Example usage
 joint_angles = [0, 0]
-plt = visualize_robot(joint_angles, [4, 2])
+plt, end_effector = visualize_robot(joint_angles, [4, 2])
 plt.savefig('image1.png')
 
 joint_angles = [-np.pi/4, -np.pi/2]
-plt = visualize_robot(joint_angles, [4, 2])
+plt, end_effector = visualize_robot(joint_angles, [4, 2])
 plt.savefig('image2.png')
 
 joint_angles = [np.pi/8, -2*np.pi/3]
-plt = visualize_robot(joint_angles, [2, 3])
+plt, end_effector = visualize_robot(joint_angles, [2, 3])
 plt.savefig('image3.png')
