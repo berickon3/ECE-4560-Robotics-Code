@@ -10,17 +10,35 @@ def R(theta):
     return np.array([[np.cos(theta), -np.sin(theta)],
                     [np.sin(theta), np.cos(theta)]])
 
+def T(R, d):
+    T = np.eye(3)
+    T[0:2, 0:2] = R
+    T[0:2, 2] = d.flatten()
+    return T
+
 def visualize_robot(joint_angles, link_lengths):
     
     # Get all frame rotation matrices
-    Rlist = []
-    
+    Rlist = [R(angle) for angle in joint_angles]
+
     # Get all frame displacement vectors
-    dlist = []
+    dlist = link_lengths
     
+    # Compute the transformation matrices for each frame
+    Tlist = []
+    for i in range(len(Rlist)):
+        d = np.array([[0], [dlist[i]]])
+        Tlist.append(T(Rlist[i], d))
+        
     # Iteratively compute the homogeneous coordinates of each frame and extract the position and rotation matrices for each frame
     frame_pos = []
     frame_rot = []
+    
+    T_curr = np.eye(3)
+    for Transformation in Tlist:
+        T_curr = T_curr @ Transformation
+        frame_pos.append(T_curr[0:2, 2].flatten().tolist())
+        frame_rot.append(T_curr[0:2, 0:2])
 
     # Plot the robot arm as a series of frame locations
     plt.figure()
