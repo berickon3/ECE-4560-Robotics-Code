@@ -2,8 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def get_axes(p, R):
-    x_axis = p + R @ np.array([[1], [0]])
-    y_axis = p + R @ np.array([[0], [1]])
+    x_axis = p + (R @ np.array([[1], [0]]).flatten().tolist())
+    y_axis = p + (R @ np.array([[0], [1]]).flatten().tolist())
     return x_axis, y_axis
 
 def R(theta):
@@ -25,7 +25,7 @@ def visualize_robot(joint_angles, link_lengths):
     dlist = link_lengths
     
     # Compute the transformation matrices for each frame
-    Tlist = []
+    Tlist = [np.eye(3)]
     for i in range(len(Rlist)):
         d = np.array([[0], [dlist[i]]])
         Tlist.append(T(Rlist[i], d))
