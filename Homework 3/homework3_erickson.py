@@ -47,6 +47,7 @@ def visualize_robot(joint_angles, link_lengths):
     plt.plot([coord[0] for coord in frame_pos], [coord[1] for coord in frame_pos], 'ko-')
     
     # Plot the coordinate axes of each individual frames
+    p = []
     for i in range(len(Rlist)):
         p = frame_pos[i]
         Rm = frame_rot[i]
@@ -62,19 +63,23 @@ def visualize_robot(joint_angles, link_lengths):
     plt.xlim([-10, 10])
     plt.ylim([-2, 10])
 
-    final_axes = get_axes(frame_pos[-1], frame_rot[-1])
-
-    return plt, [frame_pos[-1], final_axes]
+    return plt, p, np.arctan2(frame_rot[-1][1, 0], frame_rot[-1][0, 0])
 
 # Example usage
 joint_angles = [0, 0]
-plt, end_effector = visualize_robot(joint_angles, [4, 2])
+plt, end_effector_position, end_effector_theta = visualize_robot(joint_angles, [4, 2])
 plt.savefig('image1.png')
 
 joint_angles = [-np.pi/4, -np.pi/2]
-plt, end_effector = visualize_robot(joint_angles, [4, 2])
+plt, end_effector_position, end_effector_theta = visualize_robot(joint_angles, [4, 2])
 plt.savefig('image2.png')
 
 joint_angles = [np.pi/8, -2*np.pi/3]
 plt, end_effector_position, end_effector_theta = visualize_robot(joint_angles, [2, 3])
 plt.savefig('image3.png')
+
+joint_angles = [np.pi/3, float(3) * np.pi/4]
+plt, end_effector_position, end_effector_theta = visualize_robot(joint_angles, [3, 3])
+plt.savefig('image4.png')
+print("End Effector Position:", end_effector_position)
+print("End Effector Orientation (radians):", end_effector_theta)
