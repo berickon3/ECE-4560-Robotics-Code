@@ -78,7 +78,7 @@ joint_angles = [np.pi/8, -2*np.pi/3]
 plt, end_effector_position, end_effector_theta = visualize_robot(joint_angles, [2, 3])
 plt.savefig('image3.png')
 
-joint_angles = [np.pi/3, float(3) * np.pi/4]
+joint_angles = [np.pi/3, float(-3) * np.pi/4]
 plt, end_effector_position, end_effector_theta = visualize_robot(joint_angles, [3, 3])
 plt.savefig('image4.png')
 print("End Effector Position:", end_effector_position)
